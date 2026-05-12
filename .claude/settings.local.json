@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(Get-ChildItem *)",
+      "Bash(dart --version)",
+      "Bash(flutter --version)",
+      "Bash(Select-Object Name)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(copy \"C:\\\\Users\\\\MarneilOrosca\\\\Downloads\\\\72bd70e9-529b-405c-b1ba-ddd04a705778.png\" \"C:\\\\Users\\\\MarneilOrosca\\\\source\\\\repos\\\\budgeta\\\\assets\\\\images\\\\logo.png\")",
+      "Bash(flutter pub *)",
+      "PowerShell(Copy-Item *)"
+    ]
+  }
+}
