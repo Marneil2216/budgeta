@@ -10,8 +10,10 @@ import '../../../../core/extensions/datetime_extensions.dart';
 import '../../../../core/widgets/app_loading_indicator.dart';
 import '../../../profile/presentation/providers/profile_provider.dart';
 import '../providers/dashboard_provider.dart';
+import '../providers/notifications_provider.dart';
 import '../widgets/balance_hero_card.dart';
 import '../widgets/daily_budget_card.dart';
+import '../widgets/notification_banners.dart';
 import '../widgets/summary_row.dart';
 import '../widgets/upcoming_bills_card.dart';
 
@@ -23,6 +25,7 @@ class DashboardScreen extends ConsumerWidget {
     final summary = ref.watch(dashboardSummaryProvider);
     final profileAsync = ref.watch(userProfileProvider);
     final profile = profileAsync.valueOrNull;
+    final notifications = ref.watch(dashboardNotificationsProvider);
     final now = DateTime.now();
 
     if (profileAsync.isLoading) {
@@ -112,6 +115,10 @@ class DashboardScreen extends ConsumerWidget {
                         ),
                       ),
                     ] else ...[
+                      if (notifications.isNotEmpty) ...[
+                        NotificationBanners(notifications: notifications),
+                        const SizedBox(height: AppSpacing.xs),
+                      ],
                       BalanceHeroCard(
                         remainingBalance: summary.remainingBalance,
                         salary: summary.salary,

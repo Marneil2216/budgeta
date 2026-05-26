@@ -10,7 +10,7 @@ import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/neumorphic_button.dart';
 import '../../../../core/widgets/neumorphic_text_field.dart';
 import '../providers/auth_provider.dart';
-import '../widgets/auth_header.dart';
+import '../widgets/auth_wave_layout.dart';
 
 const _kRememberMeKey = 'remember_me';
 const _kSavedEmailKey = 'saved_email';
@@ -64,6 +64,60 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  void _showForgotPassword(BuildContext context) {
+    final ctrl = TextEditingController(text: _emailCtrl.text.trim());
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Reset Password'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Enter your email and we\'ll send you a reset link.',
+              style: TextStyle(fontSize: 13),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: ctrl,
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                hintText: 'you@example.com',
+                border:
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final email = ctrl.text.trim();
+              if (email.isEmpty) return;
+              final messenger = ScaffoldMessenger.of(context);
+              Navigator.pop(ctx);
+              await ref
+                  .read(authNotifierProvider.notifier)
+                  .resetPassword(email);
+              if (!mounted) return;
+              messenger.showSnackBar(
+                const SnackBar(
+                  content: Text('Reset link sent — check your email.'),
+                ),
+              );
+            },
+            child: const Text('Send'),
+          ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     await _saveRemembered();
@@ -79,158 +133,121 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isLoading = authState.isLoading;
     final error = authState.error;
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+    return AuthWaveLayout(
+      title: 'Welcome\nBack',
+      showBack: true,
+      content: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            NeumorphicTextField(
+              controller: _emailCtrl,
+              hint: 'Email address',
+              prefixIcon: const Icon(
+                Icons.email_outlined,
+                size: 18,
+                color: AppColors.textSecondary,
+              ),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              validator: Validators.email,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            NeumorphicTextField(
+              controller: _passwordCtrl,
+              hint: 'Password',
+              prefixIcon: const Icon(
+                Icons.lock_outline,
+                size: 18,
+                color: AppColors.textSecondary,
+              ),
+              obscureText: true,
+              textInputAction: TextInputAction.done,
+              validator: Validators.password,
+              onFieldSubmitted: (_) => _submit(),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => _showForgotPassword(context),
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.zero,
+                  minimumSize: Size.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                child: const Text(
+                  'Forgot password?',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.deepGreen,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+            if (error != null) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  color: AppColors.errorRed.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.error_outline,
+                        color: AppColors.errorRed, size: 16),
+                    const SizedBox(width: AppSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        error.toString().replaceAll('Exception: ', ''),
+                        style: const TextStyle(
+                            color: AppColors.errorRed, fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            const SizedBox(height: AppSpacing.lg),
+            NeumorphicButton(
+              label: 'Log In',
+              onPressed: isLoading ? null : _submit,
+              isLoading: isLoading,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            const Row(
               children: [
-                const SizedBox(height: AppSpacing.md),
-                const AuthHeader(
-                  title: 'Welcome back',
-                  subtitle: 'Sign in to manage your budget',
+                Expanded(child: Divider()),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+                  child: Text('or',
+                      style: TextStyle(
+                          color: AppColors.textSecondary, fontSize: 13)),
                 ),
-                const SizedBox(height: AppSpacing.lg),
-                NeumorphicTextField(
-                  controller: _emailCtrl,
-                  label: 'Email',
-                  hint: 'you@example.com',
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  validator: Validators.email,
-                ),
-                const SizedBox(height: AppSpacing.md),
-                NeumorphicTextField(
-                  controller: _passwordCtrl,
-                  label: 'Password',
-                  hint: 'Your password',
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                  validator: Validators.password,
-                  onFieldSubmitted: (_) => _submit(),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: Checkbox(
-                        value: _rememberMe,
-                        onChanged: (v) => setState(() => _rememberMe = v ?? false),
-                        activeColor: AppColors.deepGreen,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-                        side: const BorderSide(color: AppColors.textSecondary),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    GestureDetector(
-                      onTap: () => setState(() => _rememberMe = !_rememberMe),
-                      child: const Text(
-                        'Remember me',
-                        style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
-                      ),
-                    ),
-                  ],
-                ),
-                if (error != null) ...[
-                  const SizedBox(height: AppSpacing.md),
-                  Container(
-                    padding: const EdgeInsets.all(AppSpacing.sm),
-                    decoration: BoxDecoration(
-                      color: AppColors.errorRed.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.error_outline, color: AppColors.errorRed, size: 16),
-                        const SizedBox(width: AppSpacing.xs),
-                        Expanded(
-                          child: Text(
-                            error.toString().replaceAll('Exception: ', ''),
-                            style: const TextStyle(color: AppColors.errorRed, fontSize: 13),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                const SizedBox(height: AppSpacing.xl),
-                NeumorphicButton(
-                  label: 'Sign In',
-                  onPressed: isLoading ? null : _submit,
-                  isLoading: isLoading,
-                ),
-                const SizedBox(height: AppSpacing.md),
-                const Row(
-                  children: [
-                    Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-                      child: Text('or', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
-                    ),
-                    Expanded(child: Divider()),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.md),
-                OutlinedButton(
-                  onPressed: isLoading
-                      ? null
-                      : () => ref.read(authNotifierProvider.notifier).signInWithGoogle(),
-                  style: OutlinedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 52),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
-                    ),
-                    side: const BorderSide(color: AppColors.divider),
-                    backgroundColor: AppColors.surfaceBase,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 20,
-                        height: 20,
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
-                        child: const Text(
-                          'G',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF4285F4),
-                            height: 1.2,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      const Text(
-                        'Continue with Google',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Center(
-                  child: TextButton(
-                    onPressed: () => context.push(RouteNames.register),
-                    child: const Text(
-                      "Don't have an account? Sign up",
-                      style: TextStyle(color: AppColors.deepGreen),
-                    ),
-                  ),
-                ),
+                Expanded(child: Divider()),
               ],
             ),
-          ),
+            const SizedBox(height: AppSpacing.md),
+            OutlinedButton(
+              onPressed: () => context.push(RouteNames.register),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 52),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppSpacing.buttonRadius),
+                ),
+                side: const BorderSide(color: AppColors.deepGreen),
+                foregroundColor: AppColors.deepGreen,
+                textStyle: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              child: const Text('Sign up'),
+            ),
+          ],
         ),
       ),
     );

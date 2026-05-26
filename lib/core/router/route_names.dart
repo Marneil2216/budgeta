@@ -1,6 +1,7 @@
 class RouteNames {
   RouteNames._();
 
+  static const entry = '/auth/entry';
   static const login = '/auth/login';
   static const register = '/auth/register';
   static const salarySetup = '/setup/salary';

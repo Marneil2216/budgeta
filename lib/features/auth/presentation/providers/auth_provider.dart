@@ -67,4 +67,11 @@ class AuthNotifier extends _$AuthNotifier {
       () => ref.read(authRepositoryProvider).signInWithGoogle(),
     );
   }
+
+  Future<void> resetPassword(String email) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+      () => ref.read(authRepositoryProvider).resetPassword(email),
+    );
+  }
 }

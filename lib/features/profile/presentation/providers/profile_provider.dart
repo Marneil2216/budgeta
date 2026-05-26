@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -60,6 +61,18 @@ class ProfileNotifier extends _$ProfileNotifier {
       await ref
           .read(profileRepositoryProvider)
           .updateProfile(user.id, {'full_name': name});
+      ref.invalidate(userProfileProvider);
+    });
+  }
+
+  Future<void> uploadAvatar(Uint8List bytes, String extension) async {
+    final user = ref.read(currentUserProvider);
+    if (user == null) return;
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await ref
+          .read(profileRepositoryProvider)
+          .uploadAvatar(user.id, bytes, extension);
       ref.invalidate(userProfileProvider);
     });
   }

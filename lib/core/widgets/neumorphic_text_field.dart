@@ -15,6 +15,7 @@ class NeumorphicTextField extends StatefulWidget {
     this.validator,
     this.onChanged,
     this.prefixText,
+    this.prefixIcon,
     this.suffixIcon,
     this.inputFormatters,
     this.maxLines = 1,
@@ -31,6 +32,7 @@ class NeumorphicTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
   final String? prefixText;
+  final Widget? prefixIcon;
   final Widget? suffixIcon;
   final List<TextInputFormatter>? inputFormatters;
   final int maxLines;
@@ -83,6 +85,7 @@ class _NeumorphicTextFieldState extends State<NeumorphicTextField> {
               decoration: InputDecoration(
                 hintText: widget.hint,
                 prefixText: widget.prefixText,
+                prefixIcon: widget.prefixIcon,
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
                 focusedBorder: InputBorder.none,

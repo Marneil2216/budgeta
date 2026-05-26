@@ -51,10 +51,13 @@ class VariableExpensesListScreen extends ConsumerWidget {
                         const SizedBox(height: AppSpacing.md),
                         const Text('No expenses yet', style: TextStyle(fontSize: 16, color: AppColors.textSecondary)),
                         const SizedBox(height: AppSpacing.md),
-                        ElevatedButton.icon(
-                          onPressed: () => context.push('/app/expenses/add'),
-                          icon: const Icon(Icons.add),
-                          label: const Text('Add Expense'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                          child: ElevatedButton.icon(
+                            onPressed: () => context.push('/app/expenses/add'),
+                            icon: const Icon(Icons.add),
+                            label: const Text('Add Expense'),
+                          ),
                         ),
                       ],
                     ),

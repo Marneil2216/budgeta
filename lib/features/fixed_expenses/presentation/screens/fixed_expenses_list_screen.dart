@@ -43,10 +43,13 @@ class FixedExpensesListScreen extends ConsumerWidget {
                   const SizedBox(height: AppSpacing.md),
                   const Text('No fixed bills yet', style: TextStyle(fontSize: 16, color: AppColors.textSecondary)),
                   const SizedBox(height: AppSpacing.md),
-                  ElevatedButton.icon(
-                    onPressed: () => context.push('/app/fixed-expenses/add'),
-                    icon: const Icon(Icons.add),
-                    label: const Text('Add Fixed Bill'),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                    child: ElevatedButton.icon(
+                      onPressed: () => context.push('/app/fixed-expenses/add'),
+                      icon: const Icon(Icons.add),
+                      label: const Text('Add Fixed Bill'),
+                    ),
                   ),
                 ],
               ),

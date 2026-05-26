@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../features/auth/presentation/providers/auth_provider.dart';
+import '../../features/auth/presentation/screens/entry_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/register_screen.dart';
 import '../../features/dashboard/presentation/screens/dashboard_screen.dart';
@@ -34,7 +35,7 @@ GoRouter appRouter(Ref ref) {
       final isOnAuth = state.matchedLocation.startsWith('/auth');
       final isOnSetup = state.matchedLocation.startsWith('/setup');
 
-      if (!isAuthenticated && !isOnAuth) return RouteNames.login;
+      if (!isAuthenticated && !isOnAuth) return RouteNames.entry;
       if (isAuthenticated && isOnAuth) {
         final profile = profileAsync.valueOrNull;
         if (profile?.monthlySalary == null) return RouteNames.salarySetup;
@@ -49,6 +50,10 @@ GoRouter appRouter(Ref ref) {
       return null;
     },
     routes: [
+      GoRoute(
+        path: '/auth/entry',
+        builder: (context, state) => const EntryScreen(),
+      ),
       GoRoute(
         path: '/auth/login',
         builder: (context, state) => const LoginScreen(),
