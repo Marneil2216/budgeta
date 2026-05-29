@@ -1,5 +1,5 @@
 name: budgeta
-description: A smart budget tracking app for managing your monthly salary.
+description: A smart budget tracking app for managing your monthly budget.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -26,11 +26,21 @@ dev_dependencies:
   custom_lint: ^0.6.7
   riverpod_lint: ^2.3.10
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.14.3
 
 dependency_overrides:
   app_links: ">=6.0.0 <6.4.0"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/app_icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#1D9E75"
+  adaptive_icon_foreground: "assets/icons/app_icon.png"
 
 flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/icons/

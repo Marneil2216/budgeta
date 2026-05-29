@@ -3,7 +3,7 @@ import '../../../fixed_expenses/domain/models/fixed_expense.dart';
 
 class DashboardSummary {
   const DashboardSummary._({
-    required this.salary,
+    required this.monthlyBudget,
     required this.currency,
     required this.totalFixedExpenses,
     required this.totalVariableExpenses,
@@ -15,7 +15,7 @@ class DashboardSummary {
     required this.upcomingBills,
   });
 
-  final double salary;
+  final double monthlyBudget;
   final String currency;
   final double totalFixedExpenses;
   final double totalVariableExpenses;
@@ -27,7 +27,7 @@ class DashboardSummary {
   final List<FixedExpense> upcomingBills;
 
   factory DashboardSummary.compute({
-    required double salary,
+    required double monthlyBudget,
     required String currency,
     required double totalFixed,
     required double totalVariable,
@@ -35,7 +35,7 @@ class DashboardSummary {
     required List<FixedExpense> allFixedExpenses,
   }) {
     final total = totalFixed + totalVariable;
-    final remaining = salary - total;
+    final remaining = monthlyBudget - total;
     final daily = remaining > 0 ? remaining / daysLeft : 0.0;
     final upcoming = allFixedExpenses
         .map((e) => MapEntry(e, BudgetDateUtils.daysUntilDue(e.dueDay)))
@@ -44,7 +44,7 @@ class DashboardSummary {
       ..sort((a, b) => a.value.compareTo(b.value));
 
     return DashboardSummary._(
-      salary: salary,
+      monthlyBudget: monthlyBudget,
       currency: currency,
       totalFixedExpenses: totalFixed,
       totalVariableExpenses: totalVariable,

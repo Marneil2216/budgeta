@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/router/route_names.dart';
+import '../../../../core/widgets/budgeta_logo.dart';
 import '../widgets/auth_wave_layout.dart';
 
 class EntryScreen extends StatelessWidget {
@@ -32,20 +33,12 @@ class EntryScreen extends StatelessWidget {
           Positioned(top: screenHeight * 0.15, left: 20,
               child: _blob(30, Colors.white.withOpacity(0.10))),
 
-          // App name top-left
+          // Logo top-left
           const SafeArea(
             child: Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: AppSpacing.xl, vertical: AppSpacing.md),
-              child: Text(
-                'Budgeta',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  letterSpacing: -0.2,
-                ),
-              ),
+              child: BudgetaLogo(iconSize: 32),
             ),
           ),
 

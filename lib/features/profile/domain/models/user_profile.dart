@@ -3,7 +3,7 @@ class UserProfile {
     required this.id,
     required this.email,
     this.fullName,
-    this.monthlySalary,
+    this.monthlyBudget,
     this.currency = 'PHP',
     this.avatarUrl,
   });
@@ -11,13 +11,13 @@ class UserProfile {
   final String id;
   final String email;
   final String? fullName;
-  final double? monthlySalary;
+  final double? monthlyBudget;
   final String currency;
   final String? avatarUrl;
 
   UserProfile copyWith({
     String? fullName,
-    double? monthlySalary,
+    double? monthlyBudget,
     String? currency,
     String? avatarUrl,
   }) =>
@@ -25,7 +25,7 @@ class UserProfile {
         id: id,
         email: email,
         fullName: fullName ?? this.fullName,
-        monthlySalary: monthlySalary ?? this.monthlySalary,
+        monthlyBudget: monthlyBudget ?? this.monthlyBudget,
         currency: currency ?? this.currency,
         avatarUrl: avatarUrl ?? this.avatarUrl,
       );
@@ -34,8 +34,8 @@ class UserProfile {
         id: map['id'] as String,
         email: map['email'] as String,
         fullName: map['full_name'] as String?,
-        monthlySalary: map['monthly_salary'] != null
-            ? double.parse(map['monthly_salary'].toString())
+        monthlyBudget: map['monthly_budget'] != null
+            ? double.parse(map['monthly_budget'].toString())
             : null,
         currency: map['currency'] as String? ?? 'PHP',
         avatarUrl: map['avatar_url'] as String?,
@@ -43,7 +43,7 @@ class UserProfile {
 
   Map<String, dynamic> toMap() => {
         'full_name': fullName,
-        'monthly_salary': monthlySalary,
+        'monthly_budget': monthlyBudget,
         'currency': currency,
         'avatar_url': avatarUrl,
       };

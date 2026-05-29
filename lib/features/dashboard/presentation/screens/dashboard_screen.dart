@@ -8,7 +8,9 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/extensions/datetime_extensions.dart';
 import '../../../../core/widgets/app_loading_indicator.dart';
+import '../../../fixed_expenses/presentation/providers/fixed_expenses_provider.dart';
 import '../../../profile/presentation/providers/profile_provider.dart';
+import '../../../variable_expenses/presentation/providers/variable_expenses_provider.dart';
 import '../providers/dashboard_provider.dart';
 import '../providers/notifications_provider.dart';
 import '../widgets/balance_hero_card.dart';
@@ -28,7 +30,7 @@ class DashboardScreen extends ConsumerWidget {
     final notifications = ref.watch(dashboardNotificationsProvider);
     final now = DateTime.now();
 
-    if (profileAsync.isLoading) {
+    if (profileAsync.isLoading && profileAsync.valueOrNull == null) {
       return const Scaffold(body: AppLoadingIndicator());
     }
 
@@ -38,6 +40,8 @@ class DashboardScreen extends ConsumerWidget {
           color: AppColors.deepGreen,
           onRefresh: () async {
             ref.invalidate(userProfileProvider);
+            ref.invalidate(fixedExpensesStreamProvider);
+            ref.invalidate(variableExpensesStreamProvider);
           },
           child: CustomScrollView(
             slivers: [
@@ -87,10 +91,15 @@ class DashboardScreen extends ConsumerWidget {
                         child: CircleAvatar(
                           radius: 18,
                           backgroundColor: AppColors.deepGreen,
-                          child: Text(
-                            profile?.initials ?? '?',
-                            style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700),
-                          ),
+                          backgroundImage: profile?.avatarUrl != null
+                              ? NetworkImage(profile!.avatarUrl!)
+                              : null,
+                          child: profile?.avatarUrl == null
+                              ? Text(
+                                  profile?.initials ?? '?',
+                                  style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w700),
+                                )
+                              : null,
                         ),
                       ),
                     ),
@@ -121,7 +130,7 @@ class DashboardScreen extends ConsumerWidget {
                       ],
                       BalanceHeroCard(
                         remainingBalance: summary.remainingBalance,
-                        salary: summary.salary,
+                        monthlyBudget: summary.monthlyBudget,
                         totalExpenses: summary.totalExpenses,
                         currency: summary.currency,
                         isOverspent: summary.isOverspent,

@@ -4,7 +4,7 @@ class RouteNames {
   static const entry = '/auth/entry';
   static const login = '/auth/login';
   static const register = '/auth/register';
-  static const salarySetup = '/setup/salary';
+  static const budgetSetup = '/setup/budget';
   static const dashboard = '/app/dashboard';
   static const fixedExpenses = '/app/fixed-expenses';
   static const addFixedExpense = '/app/fixed-expenses/add';

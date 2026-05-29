@@ -34,7 +34,8 @@ class ProfileRemoteDatasource {
             contentType: 'image/$extension',
           ),
         );
-    final url = _client.storage.from('avatars').getPublicUrl(path);
+    final baseUrl = _client.storage.from('avatars').getPublicUrl(path);
+    final url = '$baseUrl?t=${DateTime.now().millisecondsSinceEpoch}';
     await _client
         .from('user_profiles')
         .update({'avatar_url': url}).eq('id', userId);

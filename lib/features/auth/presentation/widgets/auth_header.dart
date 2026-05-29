@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/widgets/budgeta_logo.dart';
 
 class AuthHeader extends StatelessWidget {
   const AuthHeader({
@@ -17,22 +18,10 @@ class AuthHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            width: 160,
-            height: 160,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        const Text(
-          'Budgeta',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.w800,
-            color: AppColors.deepGreen,
-            letterSpacing: -0.5,
+        const Center(
+          child: BudgetaLogo(
+            iconSize: 44,
+            textColor: AppColors.deepGreen,
           ),
         ),
         const SizedBox(height: AppSpacing.xs),

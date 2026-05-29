@@ -5,8 +5,8 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/utils/currency_formatter.dart';
 import '../../../../core/widgets/neumorphic_card.dart';
 
-class SalaryInputCard extends StatelessWidget {
-  const SalaryInputCard({
+class BudgetInputCard extends StatelessWidget {
+  const BudgetInputCard({
     super.key,
     required this.controller,
     required this.currency,
@@ -25,7 +25,7 @@ class SalaryInputCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Monthly Income',
+            'Monthly Salary / Budget',
             style: TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w500,

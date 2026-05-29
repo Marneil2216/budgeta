@@ -9,29 +9,29 @@ import '../../../../core/widgets/neumorphic_button.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/salary_input_card.dart';
 
-class SalarySetupScreen extends ConsumerStatefulWidget {
-  const SalarySetupScreen({super.key});
+class BudgetSetupScreen extends ConsumerStatefulWidget {
+  const BudgetSetupScreen({super.key});
 
   @override
-  ConsumerState<SalarySetupScreen> createState() => _SalarySetupScreenState();
+  ConsumerState<BudgetSetupScreen> createState() => _BudgetSetupScreenState();
 }
 
-class _SalarySetupScreenState extends ConsumerState<SalarySetupScreen> {
+class _BudgetSetupScreenState extends ConsumerState<BudgetSetupScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _salaryCtrl = TextEditingController();
+  final _budgetCtrl = TextEditingController();
   String _currency = 'PHP';
 
   @override
   void dispose() {
-    _salaryCtrl.dispose();
+    _budgetCtrl.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
-    final salary = double.parse(_salaryCtrl.text.replaceAll(',', ''));
+    final amount = double.parse(_budgetCtrl.text.replaceAll(',', ''));
     await ref.read(profileNotifierProvider.notifier).updateCurrency(_currency);
-    await ref.read(profileNotifierProvider.notifier).updateSalary(salary);
+    await ref.read(profileNotifierProvider.notifier).updateBudget(amount);
   }
 
   @override
@@ -51,7 +51,7 @@ class _SalarySetupScreenState extends ConsumerState<SalarySetupScreen> {
                 const Icon(Icons.account_balance_wallet, color: AppColors.deepGreen, size: 48),
                 const SizedBox(height: AppSpacing.md),
                 const Text(
-                  "What's your monthly income?",
+                  "What's your monthly salary / budget?",
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w700,
@@ -65,8 +65,8 @@ class _SalarySetupScreenState extends ConsumerState<SalarySetupScreen> {
                   style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
                 ),
                 const SizedBox(height: AppSpacing.xl),
-                SalaryInputCard(
-                  controller: _salaryCtrl,
+                BudgetInputCard(
+                  controller: _budgetCtrl,
                   currency: _currency,
                   validator: Validators.amount,
                 ),

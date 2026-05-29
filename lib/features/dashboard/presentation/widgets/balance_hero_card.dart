@@ -10,14 +10,14 @@ class BalanceHeroCard extends StatelessWidget {
   const BalanceHeroCard({
     super.key,
     required this.remainingBalance,
-    required this.salary,
+    required this.monthlyBudget,
     required this.totalExpenses,
     required this.currency,
     required this.isOverspent,
   });
 
   final double remainingBalance;
-  final double salary;
+  final double monthlyBudget;
   final double totalExpenses;
   final String currency;
   final bool isOverspent;
@@ -26,7 +26,7 @@ class BalanceHeroCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final today = DateTime.now();
     final totalDays = DateTime(today.year, today.month + 1, 0).day;
-    final spentPercent = salary > 0 ? (totalExpenses / salary).clamp(0.0, 1.0) : 0.0;
+    final spentPercent = monthlyBudget > 0 ? (totalExpenses / monthlyBudget).clamp(0.0, 1.0) : 0.0;
     final dayPercent = ((today.day - 1) / totalDays).clamp(0.0, 1.0);
     final isOnTrack = !isOverspent && spentPercent <= dayPercent + 0.05;
 
@@ -114,8 +114,8 @@ class BalanceHeroCard extends StatelessWidget {
             children: [
               Expanded(
                 child: _MiniStat(
-                  label: 'Income',
-                  value: CurrencyFormatter.format(salary, currency),
+                  label: 'Budget',
+                  value: CurrencyFormatter.format(monthlyBudget, currency),
                   icon: Icons.arrow_downward_rounded,
                   color: AppColors.softMint,
                 ),

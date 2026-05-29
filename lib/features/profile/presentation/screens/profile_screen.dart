@@ -191,13 +191,13 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     ),
                     const Divider(height: 1),
                     _ProfileTile(
-                      label: 'Monthly Salary',
-                      value: profile.monthlySalary != null
+                      label: 'Monthly Salary / Budget',
+                      value: profile.monthlyBudget != null
                           ? CurrencyFormatter.format(
-                              profile.monthlySalary!, profile.currency)
+                              profile.monthlyBudget!, profile.currency)
                           : 'Not set',
                       icon: Icons.payments_outlined,
-                      onEdit: () => _editSalary(context, ref, profile.currency),
+                      onEdit: () => _editBudget(context, ref, profile.currency, profile.monthlyBudget),
                     ),
                     const Divider(height: 1),
                     _ProfileTile(
@@ -280,8 +280,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  void _editSalary(BuildContext context, WidgetRef ref, String currency) {
-    final ctrl = TextEditingController();
+  void _editBudget(BuildContext context, WidgetRef ref, String currency, double? current) {
+    final ctrl = TextEditingController(
+      text: current != null ? current.toStringAsFixed(2) : '',
+    );
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -299,7 +301,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Edit Monthly Salary',
+            const Text('Edit Monthly Salary / Budget',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
             const SizedBox(height: 16),
             TextField(
@@ -319,7 +321,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               onPressed: () {
                 final val = double.tryParse(ctrl.text);
                 if (val != null && val > 0) {
-                  ref.read(profileNotifierProvider.notifier).updateSalary(val);
+                  ref.read(profileNotifierProvider.notifier).updateBudget(val);
                   Navigator.pop(ctx);
                 }
               },

@@ -29,14 +29,14 @@ class ProfileNotifier extends _$ProfileNotifier {
   @override
   AsyncValue<void> build() => const AsyncData(null);
 
-  Future<void> updateSalary(double salary) async {
+  Future<void> updateBudget(double amount) async {
     final user = ref.read(currentUserProvider);
     if (user == null) return;
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await ref
           .read(profileRepositoryProvider)
-          .updateProfile(user.id, {'monthly_salary': salary});
+          .updateProfile(user.id, {'monthly_budget': amount});
       ref.invalidate(userProfileProvider);
     });
   }

@@ -12,7 +12,7 @@ import '../../features/fixed_expenses/presentation/screens/fixed_expense_form_sc
 import '../../features/fixed_expenses/presentation/screens/fixed_expenses_list_screen.dart';
 import '../../features/profile/presentation/providers/profile_provider.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
-import '../../features/profile/presentation/screens/salary_setup_screen.dart';
+import '../../features/profile/presentation/screens/salary_setup_screen.dart' show BudgetSetupScreen;
 import '../../features/variable_expenses/presentation/screens/variable_expense_form_screen.dart';
 import '../../features/variable_expenses/presentation/screens/variable_expenses_list_screen.dart';
 import 'route_names.dart';
@@ -38,13 +38,13 @@ GoRouter appRouter(Ref ref) {
       if (!isAuthenticated && !isOnAuth) return RouteNames.entry;
       if (isAuthenticated && isOnAuth) {
         final profile = profileAsync.valueOrNull;
-        if (profile?.monthlySalary == null) return RouteNames.salarySetup;
+        if (profile?.monthlyBudget == null) return RouteNames.budgetSetup;
         return RouteNames.dashboard;
       }
       if (isAuthenticated && !isOnAuth && !isOnSetup) {
         final profile = profileAsync.valueOrNull;
-        if (profile != null && profile.monthlySalary == null) {
-          return RouteNames.salarySetup;
+        if (profile != null && profile.monthlyBudget == null) {
+          return RouteNames.budgetSetup;
         }
       }
       return null;
@@ -63,8 +63,8 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
-        path: '/setup/salary',
-        builder: (context, state) => const SalarySetupScreen(),
+        path: '/setup/budget',
+        builder: (context, state) => const BudgetSetupScreen(),
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,

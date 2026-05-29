@@ -16,7 +16,7 @@ DashboardSummary? dashboardSummary(Ref ref) {
   final variableAsync = ref.watch(variableExpensesStreamProvider);
 
   final profile = profileAsync.valueOrNull;
-  if (profile == null || profile.monthlySalary == null) return null;
+  if (profile == null || profile.monthlyBudget == null) return null;
 
   final fixedExpenses = fixedAsync.valueOrNull ?? [];
   final variableExpenses = variableAsync.valueOrNull ?? [];
@@ -28,7 +28,7 @@ DashboardSummary? dashboardSummary(Ref ref) {
   final daysLeft = BudgetDateUtils.daysLeftInMonth(DateTime.now());
 
   return DashboardSummary.compute(
-    salary: profile.monthlySalary!,
+    monthlyBudget: profile.monthlyBudget!,
     currency: profile.currency,
     totalFixed: totalFixed,
     totalVariable: totalVariable,
