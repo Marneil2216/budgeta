@@ -9,7 +9,21 @@
       "Bash(Select-Object -ExpandProperty Name)",
       "Bash(copy \"C:\\\\Users\\\\MarneilOrosca\\\\Downloads\\\\72bd70e9-529b-405c-b1ba-ddd04a705778.png\" \"C:\\\\Users\\\\MarneilOrosca\\\\source\\\\repos\\\\budgeta\\\\assets\\\\images\\\\logo.png\")",
       "Bash(flutter pub *)",
-      "PowerShell(Copy-Item *)"
+      "PowerShell(Copy-Item *)",
+      "Bash(dart run *)",
+      "Bash(flutter analyze *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(flutter build *)",
+      "Bash(git commit *)",
+      "Bash(magick --version)",
+      "Bash(inkscape --version)",
+      "Bash(node *)",
+      "Bash(mkdir -p assets/icons)",
+      "Read(//c/Users/MarneilOrosca/AppData/Local/Temp/**)",
+      "Bash(flutter run *)",
+      "Bash(copy *)",
+      "Bash(git push *)"
     ]
   }
 }
