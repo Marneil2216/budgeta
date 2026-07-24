@@ -45,20 +45,8 @@ class EntryScreen extends StatelessWidget {
           // Main structure
           Column(
             children: [
-              // Green section — logo centered
-              SizedBox(
-                height: screenHeight * 0.58,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      width: 110,
-                      height: 110,
-                    ),
-                  ),
-                ),
-              ),
+              // Green section
+              SizedBox(height: screenHeight * 0.58),
 
               // White wave section
               Expanded(
